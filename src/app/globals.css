@@ -66,3 +66,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .nav-link {
+    @apply text-xs font-semibold leading-5 uppercase text-neutral-1 flex items-center justify-center gap-[0.625rem] px-2 py-1 rounded-[1.25rem] hover:underline;
+  }
+
+  .footer-heading {
+    @apply text-xl leading-tight font-semibold uppercase text-secondary-1;
+  }
+
+  .footer-link {
+    @apply text-lg font-semibold leading-5 text-secondary-1 py-2 hover:underline;
+  }
+}

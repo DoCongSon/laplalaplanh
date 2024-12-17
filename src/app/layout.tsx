@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import Header from '@/components/layout/header'
 import './globals.css'
+import Footer from '@/components/layout/footer'
 
 const averta = localFont({
   src: [
@@ -59,7 +61,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${averta.className} antialiased`}>{children}</body>
+      <body className={`${averta.className} antialiased`}>
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   )
 }
