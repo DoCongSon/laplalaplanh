@@ -92,7 +92,7 @@ const Footer = ({ showLogoBoCongThuong }: FooterProps) => {
       <div className='flex gap-14 max-w-screen-2xl px-[6.5rem] mx-auto relative'>
         <div className='w-[14.5rem] flex flex-col gap-8'>
           <Link href='#'>
-            <Image src='images/logo.svg' alt='logo' width={128} height={133} className='ml-6' />
+            <Image src='/images/logo.svg' alt='logo' width={128} height={133} className='ml-6' />
           </Link>
           <div className='flex gap-4'>
             {socials.map((social, index) => (

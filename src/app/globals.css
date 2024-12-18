@@ -72,11 +72,53 @@
     @apply text-xs font-semibold leading-5 uppercase text-neutral-1 flex items-center justify-center gap-[0.625rem] px-2 py-1 rounded-[1.25rem] hover:underline;
   }
 
+  .item-card-hover {
+    @apply px-3 py-2 w-full flex rounded-full text-sm font-semibold text-primary-6 leading-5 uppercase hover:bg-secondary-5 transition-all duration-300;
+  }
+
+  .card {
+    @apply p-10 rounded-[1.25rem] bg-secondary-1 shadow-floating-button flex flex-col gap-6;
+  }
+
   .footer-heading {
     @apply text-xl leading-tight font-semibold uppercase text-secondary-1;
   }
 
   .footer-link {
     @apply text-lg font-semibold leading-5 text-secondary-1 py-2 hover:underline;
+  }
+
+  .auth-layout {
+    background: linear-gradient(0deg, rgba(4, 52, 48, 0.8) 0%, rgba(4, 52, 48, 0.8) 100%),
+      url('/images/auth-bg.png') lightgray 50% / cover no-repeat;
+  }
+
+  .paragraph-1 {
+    @apply text-sm font-normal leading-5 text-primary-1;
+  }
+
+  .paragraph-2 {
+    @apply text-xs font-normal leading-tight text-primary-1;
+  }
+
+  .heading-1 {
+    @apply text-[2.5rem] font-semibold leading-[2.8125rem] text-secondary-4;
+  }
+
+  .heading-2 {
+    @apply text-[1.5rem] font-semibold leading-tight text-secondary-4;
+  }
+
+  .heading-6 {
+    @apply text-xs leading-4 font-semibold uppercase text-secondary-4;
+  }
+
+  input[type='date']::-webkit-calendar-picker-indicator {
+    color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    display: block;
+    background: url(/icons/icon-calendar.svg) no-repeat;
+    width: 14px;
+    height: 14px;
   }
 }

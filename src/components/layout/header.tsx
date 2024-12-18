@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
+import { useGlobalStore } from '@/providers/store-provider'
 
 type MenuItem = {
   name: string
@@ -116,11 +117,17 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isHeaderBlur, setIsHeaderBlur] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const navRef = useRef<HTMLDivElement>(null)
   const { scrollY, scrollDirection } = useScroll()
+  const { user, clearUser } = useGlobalStore((state) => state)
 
-  useClickOutside(menuRef, () => {
-    setIsMenuOpen(false)
-  })
+  useClickOutside(
+    menuRef,
+    () => {
+      setIsMenuOpen(false)
+    },
+    [navRef]
+  )
 
   // scroll y > 32 => bg blur for header
   useEffect(() => {
@@ -135,7 +142,15 @@ const Header = () => {
     // Handle search
   }
 
+  const handleLogout = () => {
+    clearUser()
+  }
+
   const handleShowMenu = (menu: MenuItem) => {
+    if (menuItem?.name === menu.name && isMenuOpen) {
+      setIsMenuOpen(false)
+      return
+    }
     setIsMenuOpen(true)
     setMenuItem(menu)
   }
@@ -167,37 +182,36 @@ const Header = () => {
             <Image alt='wishlist' height={16} src='/icons/icon-bag.svg' width={16} />
             GIỎ HÀNG
           </Link>
-          <Link className='nav-link' href='#'>
-            ĐĂNG KÝ
-          </Link>
-          <Link className='nav-link' href='#'>
-            ĐĂNG NHẬP
-          </Link>
-          <HoverCard>
-            <HoverCardTrigger>
-              <p className='nav-link cursor-pointer'>
-                <Image alt='wishlist' height={16} src='/icons/icon-account.svg' width={16} />
-                HELLO, VIỆT HOÀNG
-              </p>
-            </HoverCardTrigger>
-            <HoverCardContent className='w-[14.8125rem] top-0 -right-20 absolute px-4 py-5 rounded-b-lg bg-secondary-2 shadow-floating-button flex flex-col gap-2'>
-              <Link
-                className='px-3 py-2 w-full flex rounded-full text-sm font-semibold text-primary-6 leading-5 uppercase hover:bg-secondary-5 transition-all duration-300'
-                href='#'>
-                Thông tin của tôi
+          {!user ? (
+            <>
+              <Link className='nav-link' href='/auth/register'>
+                ĐĂNG KÝ
               </Link>
-              <Link
-                className='px-3 py-2 w-full flex rounded-full text-sm font-semibold text-primary-6 leading-5 uppercase hover:bg-secondary-5 transition-all duration-300'
-                href='#'>
-                Lịch sử mua hàng
+              <Link className='nav-link' href='/auth/login'>
+                ĐĂNG NHẬP
               </Link>
-              <Link
-                className='px-3 py-2 w-full flex rounded-full text-sm font-semibold text-primary-6 leading-5 uppercase hover:bg-secondary-5 transition-all duration-300'
-                href='#'>
-                Đăng xuất
-              </Link>
-            </HoverCardContent>
-          </HoverCard>
+            </>
+          ) : (
+            <HoverCard>
+              <HoverCardTrigger>
+                <p className='nav-link cursor-pointer'>
+                  <Image alt='wishlist' height={16} src='/icons/icon-account.svg' width={16} />
+                  Hello, {user.name}
+                </p>
+              </HoverCardTrigger>
+              <HoverCardContent className='w-[14.8125rem] top-0 -right-20 absolute px-4 py-5 rounded-b-lg bg-secondary-2 shadow-floating-button flex flex-col gap-2'>
+                <Link className='item-card-hover' href='#'>
+                  Thông tin của tôi
+                </Link>
+                <Link className='item-card-hover' href='#'>
+                  Lịch sử mua hàng
+                </Link>
+                <button onClick={handleLogout} className='item-card-hover'>
+                  Đăng xuất
+                </button>
+              </HoverCardContent>
+            </HoverCard>
+          )}
         </nav>
       </div>
       <div
@@ -218,7 +232,7 @@ const Header = () => {
           'flex items-center justify-center gap-[5.875rem] px-[6.5rem] py-3 border-t border-b border-neutral-4 transition-all duration-300',
           isHeaderBlur ? 'bg-secondary-1/90 backdrop-blur-[2px]' : 'bg-secondary-1'
         )}>
-        <nav className='flex gap-4'>
+        <nav ref={navRef} className='flex gap-4'>
           {menuItems.map((item) => {
             if (item.items) {
               return (
@@ -263,7 +277,7 @@ const Header = () => {
         ref={menuRef}
         className={cn(
           '-z-10 py-8 rounded-b-lg bg-secondary-2 shadow-header absolute w-full left-0 transition-all duration-300',
-          isMenuOpen ? 'top-[12.9rem]' : '-top-0 opacity-0'
+          isMenuOpen ? 'top-[12.9rem]' : '-top-[20rem] opacity-0'
         )}>
         <div className='flex px-[6.5rem] gap-8 max-w-screen-2xl mx-auto'>
           {menuItem?.items?.map((item) => (

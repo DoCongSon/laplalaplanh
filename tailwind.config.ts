@@ -27,7 +27,7 @@ export default {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
-          1: '#29433E',
+          1: '#ECEFEF',
           4: '#29433E',
           6: '#344B4E',
           9: '#1D2A2C',
@@ -65,6 +65,13 @@ export default {
         neutral: {
           1: '#FFFFFF',
           4: '#BBBCBF',
+          5: '#D9D9D9',
+        },
+        error: {
+          4: '#F5222D',
+        },
+        info: {
+          4: '#0089B6',
         },
       },
       boxShadow: {
