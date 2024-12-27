@@ -8,10 +8,9 @@ type CheckboxProps = {
   className?: string
   iconClassName?: string
   stroke?: string
-  disabled?: boolean
 }
 
-const Checkbox = ({ onClick, selected, className, iconClassName, stroke, disabled }: CheckboxProps) => {
+const Checkbox = ({ onClick, selected, className, iconClassName, stroke }: CheckboxProps) => {
   return (
     <button
       className={cn(
