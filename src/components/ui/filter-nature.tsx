@@ -14,7 +14,7 @@ const SelectNature = ({ onClick, selected, value }: SelectNatureProps) => {
     <div
       onClick={onClick}
       className={cn(
-        'inline-flex cursor-pointer px-4 py-2 rounded-[1.25rem] shadow-button-secondary heading-6 text-primary-6 uppercase transition-all duration-300',
+        'inline-flex items-center justify-center cursor-pointer px-4 py-2 rounded-[1.25rem] shadow-button-secondary heading-6 text-primary-6 uppercase transition-all duration-300',
         selected ? 'border-2 border-primary-9 bg-primary-1' : 'border border-primary-4'
       )}>
       {value}
@@ -48,7 +48,7 @@ const FilterName = ({ name, onClick, selected }: FilterNameProps) => {
   )
 }
 
-type FilterItem = {
+export type FilterItem = {
   name: string
   values: { name: string; selected: boolean }[]
 }

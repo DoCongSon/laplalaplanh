@@ -7,14 +7,16 @@ import ProductViewed from '@/components/product/product-viewed'
 import Checkbox from '@/components/ui/checkbox'
 import FilterNature from '@/components/ui/filter-nature'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { productListConstants, SortProduct } from '@/constants'
+import { productListConstants, type SortProduct } from '@/constants'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
-import React from 'react'
+import React, { use } from 'react'
+
 const { products, images, filters, sortItems } = productListConstants
 
-const BestSellerPage = () => {
+const SearchPage = ({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) => {
   const [sort, setSort] = React.useState<{ name: string; value: SortProduct }>({ name: 'mặc định', value: 'default' })
+  const { query } = use(searchParams)
 
   const handleClickSort = (newSort: { name: string; value: SortProduct }) => {
     if (sort.value === newSort.value) {
@@ -26,8 +28,13 @@ const BestSellerPage = () => {
 
   return (
     <div className='mt-10 max-w-screen-2xl mx-auto px-[6.5rem] pb-20'>
-      <div className='flex items-center justify-center'>
-        <h2 className={cn('heading-2 leading-normal uppercase inline-block text-primary-6')}>Best Seller</h2>
+      <div className='flex items-start gap-2 justify-center'>
+        <Image src='/icons/icon-search.svg' alt='' width={18} height={18} className='mt-2' />
+        <h2 className={cn('heading-2 leading-normal uppercase inline-block text-primary-6 text-center')}>
+          KẾT QUẢ TÌM KIẾM CHO TỪ KHÓA
+          <br />
+          <span className='normal-case text-black'>&quot;{query}&quot;</span>
+        </h2>
       </div>
       <FilterNature
         className='mt-10'
@@ -92,4 +99,4 @@ const BestSellerPage = () => {
   )
 }
 
-export default BestSellerPage
+export default SearchPage

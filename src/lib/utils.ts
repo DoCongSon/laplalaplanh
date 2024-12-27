@@ -15,15 +15,3 @@ export function cn(...inputs: ClassValue[]) {
 export const priceFormat = (price: number) => {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)
 }
-
-/**
- * Generates a random class name by appending a random string to the given class name.
- * This is useful for generating unique class names for styling components.
- *
- * @param className - The class name to append a random string to.
- * @returns The class name with a random string appended to it.
- * @example randomClass('carousel') => 'carouse-labc1'
- */
-export function randomClass(className: string) {
-  return `${className}-${Math.random().toString(36).substring(2, 6)}`
-}

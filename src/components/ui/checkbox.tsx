@@ -6,9 +6,12 @@ type CheckboxProps = {
   selected?: boolean
   onClick?: () => void
   className?: string
+  iconClassName?: string
+  stroke?: string
+  disabled?: boolean
 }
 
-const Checkbox = ({ onClick, selected, className }: CheckboxProps) => {
+const Checkbox = ({ onClick, selected, className, iconClassName, stroke, disabled }: CheckboxProps) => {
   return (
     <button
       className={cn(
@@ -17,7 +20,12 @@ const Checkbox = ({ onClick, selected, className }: CheckboxProps) => {
         className
       )}
       onClick={onClick}>
-      <Star className='w-3 h-3' strokeWidth='1' stroke='#29433E' fill={selected ? 'white' : 'none'} />
+      <Star
+        className={cn('w-3 h-3', iconClassName)}
+        strokeWidth='1'
+        stroke={stroke || '#29433E'}
+        fill={selected ? 'white' : 'none'}
+      />
     </button>
   )
 }

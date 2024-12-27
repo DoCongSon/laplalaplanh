@@ -64,6 +64,12 @@ const ProductNature = ({
     setSelectedSize(null)
   }
 
+  const typeStatus = {
+    available: 'Hàng có sẵn',
+    custom: 'Hàng order tên riêng đặt cọc 100%. Hàng sẽ về sau 10-15 ngày làm việc.',
+    order: 'Hàng order đặt cọc 30%. Hàng sẽ về sau 10-15 ngày làm việc.',
+  }
+
   return (
     <div className={className}>
       <div className='flex flex-col gap-4'>
@@ -74,15 +80,7 @@ const ProductNature = ({
         </div>
         <h3 className='heading-3 text-black'>{name}</h3>
         <ProductPrice price={price} salePrice={salePrice} />
-        {type === 'order' && (
-          <p className='paragraph-2 text-[#C41B24]'>Hàng order đặt cọc 30%. Hàng sẽ về sau 10-15 ngày làm việc.</p>
-        )}
-        {type === 'custom' && (
-          <p className='paragraph-2 text-[#C41B24]'>
-            Hàng order tên riêng đặt cọc 100%. Hàng sẽ về sau 10-15 ngày làm việc.
-          </p>
-        )}
-        {type === 'available' && <p className='paragraph-2 text-[#C41B24]'>Hàng có sẵn</p>}
+        {type && <p className='paragraph-2 text-[#C41B24]'>{typeStatus[type]}</p>}
       </div>
       <Separator className='mt-5' />
       <div className='mt-5'>

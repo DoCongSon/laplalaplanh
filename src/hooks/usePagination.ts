@@ -10,6 +10,18 @@ type UsePaginationReturn = {
   showRightEllipsis: boolean
 }
 
+/**
+ * Custom hook to calculate pagination range and ellipsis visibility.
+ *
+ * @param {Object} params - The parameters for pagination.
+ * @param {number} params.currentPage - The current active page.
+ * @param {number} params.totalPages - The total number of pages.
+ * @param {number} params.paginationItemsToDisplay - The number of pagination items to display.
+ * @returns {Object} - The pagination range and ellipsis visibility.
+ * @returns {number[]} returns.pages - The array of page numbers to display.
+ * @returns {boolean} returns.showLeftEllipsis - Whether to show the left ellipsis.
+ * @returns {boolean} returns.showRightEllipsis - Whether to show the right ellipsis.
+ */
 export function usePagination({
   currentPage,
   totalPages,

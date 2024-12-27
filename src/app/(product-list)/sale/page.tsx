@@ -1,103 +1,21 @@
 'use client'
+import Logo from '@/components/icons/logo'
 import MainPagination from '@/components/layout/main-pagination'
-import ProductCard, { ProductCardProps } from '@/components/product/product-card'
+import ProductCard from '@/components/product/product-card'
 import ProductList from '@/components/product/product-list'
 import ProductViewed from '@/components/product/product-viewed'
 import Checkbox from '@/components/ui/checkbox'
 import FilterNature from '@/components/ui/filter-nature'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
+import { productListConstants, SortProduct } from '@/constants'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import React from 'react'
 
-type SortProduct = 'default' | 'price-asc' | 'price-desc' | 'newest' | 'best-sell'
-
-const products: ProductCardProps[] = [
-  {
-    image: '/images/product-1.jpg',
-    name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-    price: 1400000,
-    salePrice: 1200000,
-    tags: ['new', 'order'],
-    cart: true,
-  },
-  {
-    image: '/images/product-1.jpg',
-    name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-    price: 1400000,
-    salePrice: 1200000,
-    tags: ['new', 'order'],
-    cart: true,
-  },
-  {
-    image: '/images/product-1.jpg',
-    name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-    price: 1400000,
-    salePrice: 1200000,
-    tags: ['new', 'order'],
-    cart: true,
-  },
-  {
-    image: '/images/product-1.jpg',
-    name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-    price: 1400000,
-    salePrice: 1200000,
-    tags: ['new', 'order'],
-    cart: true,
-  },
-  {
-    image: '/images/product-1.jpg',
-    name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-    price: 1400000,
-    salePrice: 1200000,
-    tags: ['new', 'order'],
-    cart: true,
-  },
-  {
-    image: '/images/product-1.jpg',
-    name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-    price: 1400000,
-    salePrice: 1200000,
-    tags: ['new', 'order'],
-    cart: true,
-  },
-  {
-    image: '/images/product-1.jpg',
-    name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-    price: 1400000,
-    salePrice: 1200000,
-    tags: ['new', 'order'],
-    cart: true,
-  },
-  {
-    image: '/images/product-1.jpg',
-    name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-    price: 1400000,
-    salePrice: 1200000,
-    tags: ['new', 'order'],
-    cart: true,
-  },
-]
-
-const images = [
-  '/images/product-1.jpg',
-  '/images/product-1.jpg',
-  '/images/product-1.jpg',
-  '/images/product-1.jpg',
-  '/images/product-1.jpg',
-  '/images/product-1.jpg',
-  '/images/product-1.jpg',
-]
+const { products, images, filters, sortItems } = productListConstants
 
 const SalePage = () => {
   const [sort, setSort] = React.useState<{ name: string; value: SortProduct }>({ name: 'mặc định', value: 'default' })
-
-  const sortItems: { name: string; value: SortProduct }[] = [
-    { name: 'mới nhất', value: 'newest' },
-    { name: 'bán chạy', value: 'best-sell' },
-    { name: 'giá tăng dần', value: 'price-asc' },
-    { name: 'giá giảm dần', value: 'price-desc' },
-  ]
 
   const handleClickSort = (newSort: { name: string; value: SortProduct }) => {
     if (sort.value === newSort.value) {
@@ -122,38 +40,7 @@ const SalePage = () => {
         onFilterChange={(natures) => {
           console.log(natures)
         }}
-        filters={[
-          {
-            name: 'Size',
-            values: [
-              {
-                name: 'S',
-                selected: false,
-              },
-              {
-                name: 'M',
-                selected: false,
-              },
-              {
-                name: 'L',
-                selected: false,
-              },
-              {
-                name: 'XL',
-                selected: false,
-              },
-            ],
-          },
-          {
-            name: 'Color',
-            values: [
-              { name: 'Red', selected: false },
-              { name: 'Blue', selected: false },
-              { name: 'Green', selected: false },
-              { name: 'Yellow', selected: false },
-            ],
-          },
-        ]}
+        filters={filters}
         prideFilter={{ min: 0, max: 30000000 }}
       />
       <div className='flex items-center justify-between mt-3 p-2'>
@@ -184,12 +71,21 @@ const SalePage = () => {
           </HoverCardContent>
         </HoverCard>
       </div>
-      <div className='flex flex-wrap gap-10'>
-        {products.map((product, index) => (
-          <ProductCard key={index} {...product} />
-        ))}
-      </div>
-      <MainPagination currentPage={1} totalPages={5} className='mt-3' />
+      {products.length > 0 ? (
+        <div>
+          <div className='flex flex-wrap gap-10'>
+            {products.map((product, index) => (
+              <ProductCard key={index} {...product} />
+            ))}
+          </div>
+          <MainPagination currentPage={1} totalPages={5} className='mt-3' />
+        </div>
+      ) : (
+        <div className='flex flex-col items-center py-[6rem]'>
+          <Logo className='w-[4.9375rem] h-[5.125rem]' fill='#29433E' />
+          <h2 className='heading-2 text-primary-6 mt-6'>Không tìm thấy sản phẩm</h2>
+        </div>
+      )}
       <ProductList
         products={products}
         title='Sản phẩm được tìm kiếm nhiều nhất'

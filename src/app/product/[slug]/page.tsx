@@ -1,66 +1,21 @@
 import MainBreadcrumb from '@/components/layout/main-breadcrumb'
-import ProductCard, { ProductCardProps } from '@/components/product/product-card'
+import ProductCard from '@/components/product/product-card'
 import ProductImageView from '@/components/product/product-image-view'
 import ProductList from '@/components/product/product-list'
 import ProductNature from '@/components/product/product-nature'
-import ProductReviewItem, { ProductReviewItemProps } from '@/components/product/product-review-item'
+import ProductReviewItem from '@/components/product/product-review-item'
 import ProductViewed from '@/components/product/product-viewed'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Description, productConstants } from '@/constants'
 import Image from 'next/image'
-import React, { JSX } from 'react'
+import React from 'react'
+const { images, reviewProducts, products } = productConstants
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const items = [
     { label: 'Product', href: '/product' },
     { label: 'Product 1', href: '/product/product-1' },
   ]
-
-  const images = [
-    '/images/product-1.jpg',
-    '/images/product-1.jpg',
-    '/images/product-1.jpg',
-    '/images/product-1.jpg',
-    '/images/product-1.jpg',
-    '/images/product-1.jpg',
-    '/images/product-1.jpg',
-  ]
-
-  const products: ProductCardProps[] = [
-    {
-      image: '/images/product-1.jpg',
-      name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-      price: 1400000,
-      salePrice: 1200000,
-      tags: ['new', 'order'],
-      cart: true,
-    },
-    {
-      image: '/images/product-1.jpg',
-      name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-      price: 1400000,
-      salePrice: 1200000,
-      tags: ['new', 'order'],
-      cart: true,
-    },
-    {
-      image: '/images/product-1.jpg',
-      name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-      price: 1400000,
-      salePrice: 1200000,
-      tags: ['new', 'order'],
-      cart: true,
-    },
-    {
-      image: '/images/product-1.jpg',
-      name: 'Áo ngủ chống mồ hôi trộm cho bé Rotobebe Áo ngủ chống mồ hôi trộm cho bé Rotobebe',
-      price: 1400000,
-      salePrice: 1200000,
-      tags: ['new', 'order'],
-      cart: true,
-    },
-  ]
-
-  type Description = { type: 'image'; content: string } | { type: 'text'; content: JSX.Element }
 
   const description: Description[] = [
     {
@@ -83,27 +38,6 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
     {
       type: 'image',
       content: '/images/description.png',
-    },
-  ]
-
-  const reviews: ProductReviewItemProps[] = [
-    {
-      avatar: '/images/avatar.png',
-      name: 'Nguyễn Thị Hồng',
-      date: '20 Oct 2021',
-      rating: 3,
-      productNature: 'Màu: Xanh',
-      content: 'Sản phẩm rất tốt, chất lượng tuyệt vời',
-      images: ['/images/product-1.jpg', '/images/product-1.jpg'],
-    },
-    {
-      avatar: '/images/avatar.png',
-      name: 'Nguyễn Thị Hồng',
-      date: '20 Oct 2021',
-      rating: 5,
-      productNature: 'Màu: Xanh',
-      content: 'Sản phẩm rất tốt, chất lượng tuyệt vời',
-      images: ['/images/product-1.jpg', '/images/product-1.jpg'],
     },
   ]
 
@@ -175,7 +109,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
           </TabsContent>
           <TabsContent value='review'>
             <div className='flex flex-col gap-6'>
-              {reviews.map((review, index) => (
+              {reviewProducts.map((review, index) => (
                 <ProductReviewItem key={index} {...review} />
               ))}
             </div>

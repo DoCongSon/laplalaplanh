@@ -4,8 +4,10 @@ import ProductTag, { ProductTagProps } from './product-tag'
 import ProductPrice from './product-price'
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
+import Link from 'next/link'
 
 export type ProductCardProps = {
+  slug: string
   image: string
   name: string
   price: number
@@ -15,6 +17,7 @@ export type ProductCardProps = {
   cart?: boolean
   onWishlistClick?: () => void
   onCartClick?: () => void
+  onRemoveClick?: () => void
 }
 
 type IconProps = {
@@ -105,20 +108,61 @@ const CartIcon = ({ chosen, onClick }: IconProps) => {
   )
 }
 
+const RemoveIcon = ({ chosen, onClick }: IconProps) => {
+  return (
+    <Tooltip>
+      <TooltipTrigger>
+        <div
+          onClick={onClick}
+          className={cn(
+            'flex items-center justify-center p-2 rounded-lg border group/wishlist hover:shadow-floating-button hover:bg-secondary-6 hover:border-neutral-5 transition-all duration-300',
+            chosen ? 'bg-secondary-4 border-secondary-5 shadow-floating-button' : 'border-neutral-5 bg-secondary-2'
+          )}>
+          <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
+            <path
+              d='M6.42072 4.82928C6.20746 4.63056 5.92539 4.52238 5.63393 4.52752C5.34248 4.53266 5.06441 4.65073 4.85829 4.85685C4.65217 5.06297 4.5341 5.34105 4.52896 5.6325C4.52381 5.92395 4.632 6.20602 4.83072 6.41928L10.4107 11.9993L4.83072 17.5793C4.72019 17.6823 4.63154 17.8065 4.57005 17.9445C4.50856 18.0825 4.4755 18.2314 4.47283 18.3825C4.47017 18.5336 4.49795 18.6836 4.55453 18.8237C4.61112 18.9638 4.69533 19.091 4.80216 19.1978C4.90899 19.3047 5.03624 19.3889 5.17632 19.4455C5.3164 19.502 5.46645 19.5298 5.6175 19.5272C5.76856 19.5245 5.91753 19.4914 6.05553 19.43C6.19352 19.3685 6.31773 19.2798 6.42072 19.1693L12.0007 13.5893L17.5807 19.1693C17.6837 19.2798 17.8079 19.3685 17.9459 19.43C18.0839 19.4914 18.2329 19.5245 18.3839 19.5272C18.535 19.5298 18.685 19.502 18.8251 19.4455C18.9652 19.3889 19.0924 19.3047 19.1993 19.1978C19.3061 19.091 19.3903 18.9638 19.4469 18.8237C19.5035 18.6836 19.5313 18.5336 19.5286 18.3825C19.5259 18.2314 19.4929 18.0825 19.4314 17.9445C19.3699 17.8065 19.2812 17.6823 19.1707 17.5793L13.5907 11.9993L19.1707 6.41928C19.3694 6.20602 19.4776 5.92395 19.4725 5.6325C19.4673 5.34105 19.3493 5.06297 19.1432 4.85685C18.937 4.65073 18.659 4.53266 18.3675 4.52752C18.076 4.52238 17.794 4.63056 17.5807 4.82928L12.0007 10.4093L6.42072 4.82928Z'
+              fill={chosen ? '#344B4E' : 'none'}
+              strokeWidth={chosen ? 0 : 1.25}
+              className={cn('stroke-current text-primary-6 group-hover/wishlist:text-white')}
+            />
+          </svg>
+        </div>
+      </TooltipTrigger>
+      <TooltipContent className='p-2 overflow-visible rounded-lg bg-secondary-6 relative' side='left' sideOffset={8}>
+        <p className='paragraph-1 text-neutral-1'>Remove</p>
+        <svg
+          className='absolute top-1/2 -right-1 transform -translate-y-1/2'
+          xmlns='http://www.w3.org/2000/svg'
+          width='4'
+          height='8'
+          viewBox='0 0 4 8'
+          fill='none'>
+          <path
+            d='M3.29289 3.29289C3.68342 3.68342 3.68342 4.31658 3.29289 4.70711L9.5399e-08 8L0 4.76995e-08L3.29289 3.29289Z'
+            fill='#CCBE99'
+          />
+        </svg>
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
 const ProductCard = (props: ProductCardProps) => {
-  const { tags, image, name, price, cart, onCartClick, onWishlistClick, salePrice, wishlist } = props
+  const { tags, image, name, slug, price, cart, onCartClick, onWishlistClick, onRemoveClick, salePrice, wishlist } =
+    props
 
   return (
     <div className='rounded-[1.25rem] overflow-hidden w-[17.375rem] border border-[#C5C5C5] bg-secondary-1 inline-flex flex-col transition-all duration-300 hover:shadow-floating-button relative group'>
       <Image src={image} alt={name} width={278} height={278} className='rounded-[1.25rem] p-2 grayscale-[50%]' />
       <div className='p-4'>
-        <h3
+        <Link
+          href={`/product/${slug}`}
           className={cn(
             'h-10 text-black line-clamp-2 text-base leading-tight font-semibold',
             tags && tags.includes('out-of-stock') && 'text-neutral-7'
           )}>
           {name}
-        </h3>
+        </Link>
         <ProductPrice
           className={cn('mt-8', tags && tags.includes('out-of-stock') && 'text-neutral-7')}
           price={price}
@@ -132,8 +176,9 @@ const ProductCard = (props: ProductCardProps) => {
         <div className='absolute top-0 left-0 w-full h-full bg-[#5A555533] z-10' />
       )}
       <div className='flex flex-col gap-[0.375rem] absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300'>
-        <WishlistIcon chosen={wishlist} onClick={onWishlistClick} />
-        <CartIcon chosen={cart} onClick={onCartClick} />
+        {onRemoveClick && <RemoveIcon onClick={onRemoveClick} />}
+        {onWishlistClick && <WishlistIcon chosen={wishlist} onClick={onWishlistClick} />}
+        {onCartClick && <CartIcon chosen={cart} onClick={onCartClick} />}
       </div>
     </div>
   )

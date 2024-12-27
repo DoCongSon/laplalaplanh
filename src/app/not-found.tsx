@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default async function NotFound() {
+export default function NotFound() {
   return (
     <div className='flex items-center justify-center h-[40rem] bg-primary-6 relative overflow-hidden'>
       <div className='z-10 text-center'>

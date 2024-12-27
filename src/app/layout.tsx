@@ -63,7 +63,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${averta.className} antialiased scroll-smooth bg-secondary-1`}>
+      <body className={`${averta.className} antialiased scroll-smooth scrollbar bg-secondary-1`}>
         <GlobalStoreProvider>
           <TooltipProvider delayDuration={100}>
             <Header />
