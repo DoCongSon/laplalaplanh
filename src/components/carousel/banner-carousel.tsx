@@ -46,9 +46,7 @@ const BannerCarousel = ({ slides, id, className }: BannerCarouselProps) => {
           renderBullet: function (index, className) {
             return `<button class='${className}'></button>`
           },
-        }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log('slide change')}>
+        }}>
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <div className='w-full h-[32.5rem] relative'>

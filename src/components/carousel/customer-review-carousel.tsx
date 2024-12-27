@@ -31,9 +31,7 @@ const CustomerReviewCarousel = ({ reviews, id, className }: ReviewCarouselProps)
         navigation={{
           prevEl: `.${reviewPre}`,
           nextEl: `.${reviewNext}`,
-        }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log('slide change')}>
+        }}>
         {reviews.map((review, index) => (
           <SwiperSlide key={index}>
             <ReviewCard {...review} />
