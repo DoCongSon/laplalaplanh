@@ -59,17 +59,26 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
+  img {
+    @apply select-none;
   }
 }
 
 @layer components {
+  .scrollbar {
+    @apply max-h-[400px] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500;
+  }
+
   .nav-link {
     @apply text-xs font-semibold leading-5 uppercase text-neutral-1 flex items-center justify-center gap-[0.625rem] px-2 py-1 rounded-[1.25rem] hover:underline;
+  }
+
+  .item-card-hover {
+    @apply px-3 py-2 w-full flex rounded-full text-sm font-semibold text-primary-6 leading-5 uppercase hover:bg-secondary-5 transition-all duration-300;
+  }
+
+  .card {
+    @apply p-10 rounded-[1.25rem] bg-secondary-1 shadow-floating-button flex flex-col gap-6;
   }
 
   .footer-heading {
@@ -79,4 +88,68 @@
   .footer-link {
     @apply text-lg font-semibold leading-5 text-secondary-1 py-2 hover:underline;
   }
+
+  .auth-layout {
+    background: linear-gradient(0deg, #043430cc 0%, #043430cc 100%),
+      url('/images/auth-bg.png') lightgray 50% / cover no-repeat;
+  }
+
+  .title {
+    @apply text-[2rem] leading-none font-semibold uppercase;
+  }
+
+  .paragraph-1 {
+    @apply text-sm font-normal leading-5 text-primary-1;
+  }
+
+  .paragraph-2 {
+    @apply text-xs font-normal leading-tight text-primary-1;
+  }
+
+  .heading-1 {
+    @apply text-[2.5rem] font-semibold leading-[2.8125rem] text-secondary-4;
+  }
+
+  .heading-2 {
+    @apply text-[1.5rem] font-semibold leading-tight text-secondary-4;
+  }
+
+  .heading-3 {
+    @apply text-xl font-semibold leading-tight text-secondary-4;
+  }
+
+  .heading-4 {
+    @apply text-lg font-semibold leading-5 text-secondary-4;
+  }
+
+  .heading-6 {
+    @apply text-xs leading-4 font-semibold uppercase text-secondary-4;
+  }
+
+  .input-range {
+    @apply [&>:first-child]:bg-primary-3 [&>:first-child>span]:bg-primary-6 [&>:last-child>span]:rounded-full [&>:last-child>span]:bg-[url("/images/thumb-input-range.svg")] [&>:last-child>span]:w-5 [&>:last-child>span]:h-5 [&>:last-child>span]:bg-no-repeat [&>:last-child>span]:bg-center [&>:last-child>span]:bg-contain [&>:last-child>span]:bg-transparent [&>:last-child>span]:border-none [&>:last-child>span]:shadow-none [&>:last-child>span]:focus-visible:ring-0;
+  }
+}
+
+/* custom icon input type date */
+input[type='date']::-webkit-calendar-picker-indicator {
+  color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  display: block;
+  background: url(/icons/icon-calendar.svg) no-repeat;
+  width: 14px;
+  height: 14px;
+}
+
+/* bg color gradient */
+.bg-green-gradient {
+  background: linear-gradient(256deg, #223622 32.05%, #3c5e3c 80.01%);
+}
+
+.bg-blue-gradient {
+  background: linear-gradient(247deg, #3a7487 33.27%, #7ba2af 79.97%);
+}
+
+.bg-orange-gradient {
+  background: linear-gradient(264deg, #8f1313 10.15%, #c75835 87.61%);
 }

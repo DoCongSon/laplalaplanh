@@ -6,120 +6,36 @@ import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
+import ProductPrice from '@/components/product/product-price'
+import TopHeader from '@/components/layout/top-header'
+import { homeCategories, MenuItem, menuItems, products } from '@/constants'
 
-type MenuItem = {
-  name: string
-  icon?: string
-  href?: string
-  items?: MenuItem[]
-}
-
-const menuItems: MenuItem[] = [
-  {
-    name: 'New Arrivals',
-    href: '#',
-  },
-  {
-    name: 'Sale',
-    href: '#',
-  },
-  {
-    name: 'Danh mục sản phẩm',
-    items: [
-      {
-        name: 'Bé ngủ',
-        icon: '/icons/icon-pillow.svg',
-        items: [
-          { name: 'Giường, quây, cũi', href: '#' },
-          { name: 'Chăn, ga, gối, đệm', href: '#' },
-          { name: 'Kén, nhộng chũn, quần bé', href: '#' },
-        ],
-      },
-      {
-        name: 'Bé ăn',
-        icon: '/icons/icon-spoon.svg',
-        items: [
-          { name: 'Bé tuti', href: '#' },
-          { name: 'Thực phẩm', href: '#' },
-          { name: 'Dụng cụ ăn dặm', href: '#' },
-          { name: 'Tỉ giá & phụ kiện', href: '#' },
-        ],
-      },
-      {
-        name: 'Bé điệu',
-        icon: '/icons/icon-dress.svg',
-        items: [
-          { name: 'Quần áo', href: '#' },
-          { name: 'Giày dép', href: '#' },
-          { name: 'Túi / balo', href: '#' },
-          { name: 'Phụ kiện', href: '#' },
-        ],
-      },
-      {
-        name: 'In - thêu tên',
-        icon: '/icons/icon-teddy-bear.svg',
-        items: [
-          { name: 'Khăn mặt', href: '#' },
-          { name: 'Sticker', href: '#' },
-          { name: 'Huy hiệu / Nametag', href: '#' },
-          { name: 'Sản phẩm khác', href: '#' },
-        ],
-      },
-      {
-        name: 'Chăm sóc',
-        icon: '/icons/icon-face-child.svg',
-        items: [
-          { name: 'Bỉm', href: '#' },
-          { name: 'Bé tắm', href: '#' },
-          { name: 'Vật dụng bảo hộ', href: '#' },
-          { name: 'Chăm sóc da bé', href: '#' },
-          { name: 'Chăm sóc răng miệng', href: '#' },
-          { name: 'Dung dịch vệ sinh cho bé', href: '#' },
-        ],
-      },
-      {
-        name: 'Bé chơi',
-        icon: '/icons/icon-drum.svg',
-        items: [
-          { name: 'Thú bông', href: '#' },
-          { name: 'Đồ sơ sinh', href: '#' },
-          { name: 'Đồ chơi giáo dục', href: '#' },
-          { name: 'Đồ chơi sáng tạo', href: '#' },
-          { name: 'Nội thất phòng bé', href: '#' },
-          { name: 'Xe đẩy và phụ kiện', href: '#' },
-        ],
-      },
-      {
-        name: 'Chăm sóc gia đình',
-        icon: '/icons/icon-family-home.svg',
-        items: [
-          { name: 'Thực phẩm chức năng', href: '#' },
-          { name: 'Máy móc thiết bị', href: '#' },
-          { name: 'Mỹ phẩm & phụ kiện', href: '#' },
-          { name: 'Sản phẩm khác', href: '#' },
-        ],
-      },
-    ],
-  },
-  {
-    name: 'Blog',
-    href: '#',
-  },
-  {
-    name: 'Về chúng tôi',
-    href: '#',
-  },
-]
+const trendingKeywords = ['Áo ngủ', 'scooter', 'túi giữ nhiệt', 'địu', 'túi ngủ']
 
 const Header = () => {
+  const [searchInput, setSearchInput] = useState('')
   const [menuItem, setMenuItem] = useState<MenuItem | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isHeaderBlur, setIsHeaderBlur] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const navRef = useRef<HTMLDivElement>(null)
+  const searchDropdownRef = useRef<HTMLDivElement>(null)
   const { scrollY, scrollDirection } = useScroll()
+  const router = useRouter()
 
-  useClickOutside(menuRef, () => {
-    setIsMenuOpen(false)
+  useClickOutside(
+    menuRef,
+    () => {
+      setIsMenuOpen(false)
+    },
+    [navRef]
+  )
+
+  useClickOutside(searchDropdownRef, () => {
+    setIsSearchOpen(false)
   })
 
   // scroll y > 32 => bg blur for header
@@ -132,10 +48,14 @@ const Header = () => {
   }, [scrollY])
 
   const handleSearch = () => {
-    // Handle search
+    router.push(`/search?query=${searchInput}`)
   }
 
   const handleShowMenu = (menu: MenuItem) => {
+    if (menuItem?.name === menu.name && isMenuOpen) {
+      setIsMenuOpen(false)
+      return
+    }
     setIsMenuOpen(true)
     setMenuItem(menu)
   }
@@ -143,69 +63,13 @@ const Header = () => {
   return (
     <header
       className={cn('sticky -top-8 z-50 transition-all duration-300', scrollDirection === 'up' ? 'top-0' : '-top-8')}>
-      <div className='flex gap-20 bg-primary-4 h-8 items-center justify-center'>
-        <p className='text-white text-xs'>
-          Subscribe to{' '}
-          <Link className='underline' href='#'>
-            Lap La Lap Lanh&apos;s Instagram
-          </Link>{' '}
-          to get 10% Off today!
-        </p>
-        <p className='text-white text-xs'>
-          Subscribe to{' '}
-          <Link className='underline' href='#'>
-            Lap La Lap Lanh&apos;s Facebook
-          </Link>{' '}
-          to get 10% Off today!
-        </p>
-        <nav className='flex gap-8'>
-          <Link className='nav-link' href='#'>
-            <Image alt='wishlist' height={16} src='/icons/icon-star.svg' width={16} />
-            WISHLIST
-          </Link>
-          <Link className='nav-link' href='#'>
-            <Image alt='wishlist' height={16} src='/icons/icon-bag.svg' width={16} />
-            GIỎ HÀNG
-          </Link>
-          <Link className='nav-link' href='#'>
-            ĐĂNG KÝ
-          </Link>
-          <Link className='nav-link' href='#'>
-            ĐĂNG NHẬP
-          </Link>
-          <HoverCard>
-            <HoverCardTrigger>
-              <p className='nav-link cursor-pointer'>
-                <Image alt='wishlist' height={16} src='/icons/icon-account.svg' width={16} />
-                HELLO, VIỆT HOÀNG
-              </p>
-            </HoverCardTrigger>
-            <HoverCardContent className='w-[14.8125rem] top-0 -right-20 absolute px-4 py-5 rounded-b-lg bg-secondary-2 shadow-floating-button flex flex-col gap-2'>
-              <Link
-                className='px-3 py-2 w-full flex rounded-full text-sm font-semibold text-primary-6 leading-5 uppercase hover:bg-secondary-5 transition-all duration-300'
-                href='#'>
-                Thông tin của tôi
-              </Link>
-              <Link
-                className='px-3 py-2 w-full flex rounded-full text-sm font-semibold text-primary-6 leading-5 uppercase hover:bg-secondary-5 transition-all duration-300'
-                href='#'>
-                Lịch sử mua hàng
-              </Link>
-              <Link
-                className='px-3 py-2 w-full flex rounded-full text-sm font-semibold text-primary-6 leading-5 uppercase hover:bg-secondary-5 transition-all duration-300'
-                href='#'>
-                Đăng xuất
-              </Link>
-            </HoverCardContent>
-          </HoverCard>
-        </nav>
-      </div>
+      <TopHeader />
       <div
         className={cn(
           'flex h-[6.75rem] items-center justify-center transition-all duration-300',
           isHeaderBlur ? 'bg-secondary-1/90 backdrop-blur-[2px]' : 'bg-secondary-1'
         )}>
-        <Link href='#' className='flex items-center gap-2'>
+        <Link href='/' className='flex items-center gap-2'>
           <Image alt='logo' height={41} src='/icons/icon-logo-star.svg' width={42} />
           <div>
             <h2 className='text-[1.75rem] font-bold text-primary-6 leading-[1.875rem] uppercase'>LẤP LA LẤP LÁNH</h2>
@@ -218,7 +82,7 @@ const Header = () => {
           'flex items-center justify-center gap-[5.875rem] px-[6.5rem] py-3 border-t border-b border-neutral-4 transition-all duration-300',
           isHeaderBlur ? 'bg-secondary-1/90 backdrop-blur-[2px]' : 'bg-secondary-1'
         )}>
-        <nav className='flex gap-4'>
+        <nav ref={navRef} className='flex gap-4'>
           {menuItems.map((item) => {
             if (item.items) {
               return (
@@ -244,26 +108,88 @@ const Header = () => {
             }
           })}
         </nav>
-        <div className='flex gap-3 h-10 px-[6rem] items-center border border-black rounded-full'>
-          <input
-            placeholder='Bạn đang tìm kiếm gì?'
-            className='text-base text-primary-9 placeholder:text-primary-6 leading-tight border-none outline-none bg-transparent'
-          />
-          <Image
-            onClick={handleSearch}
-            alt=''
-            height={16}
-            src='/icons/icon-search.svg'
-            width={16}
-            className='cursor-pointer'
-          />
+        <div className='flex gap-3 h-10 px-[6rem] items-center border border-black rounded-full relative'>
+          <HoverCard open={isSearchOpen}>
+            <HoverCardTrigger></HoverCardTrigger>
+            <input
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onFocus={() => setIsSearchOpen(true)}
+              placeholder='Bạn đang tìm kiếm gì?'
+              className='text-base text-primary-9 placeholder:text-primary-6 leading-tight border-none outline-none bg-transparent'
+            />
+            <Image
+              onClick={handleSearch}
+              alt=''
+              height={16}
+              src='/icons/icon-search.svg'
+              width={16}
+              className='cursor-pointer'
+            />
+            <HoverCardContent
+              ref={searchDropdownRef}
+              className='w-[40.25rem] max-h-[40rem] overflow-y-scroll scrollbar px-5 py-9 bg-secondary-2 shadow-basic-top absolute top-7 -left-[13rem] inline-flex flex-col gap-10'>
+              <div>
+                <h3 className='font-semibold text-base leading-5 uppercase text-primary-6'>Từ khóa XU HƯỚNG</h3>
+                <div className='flex flex-wrap mt-4 gap-x-6 gap-y-4'>
+                  {trendingKeywords.map((keyword) => (
+                    <Button
+                      onClick={() => setSearchInput(keyword)}
+                      size='sm'
+                      variant='outline'
+                      key={keyword}
+                      className='hover:bg-primary-4 hover:text-white'>
+                      {keyword}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className='font-semibold text-base leading-5 uppercase text-primary-6'>Danh mục phổ biến</h3>
+                <div className='flex flex-wrap mt-4 gap-10'>
+                  {homeCategories.slice(0, 4).map((category, index) => (
+                    <Link
+                      href={category.link}
+                      key={index}
+                      className={cn('w-[6.741rem] flex flex-col items-center gap-[1.13931rem] cursor-pointer group')}>
+                      <div
+                        className={cn(
+                          'w-full h-[6.741rem] px-[1.32919rem] py-[1.21056rem] bg-transparent flex items-center justify-center rounded-full transition-all duration-300 group-hover:bg-secondary-5'
+                        )}>
+                        <Image src={category.icon} alt='' width={60} height={60} className='w-full h-full' />
+                      </div>
+                      <span className='text-xs font-semibold uppercase text-primary-6 text-center'>
+                        {category.name}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className='font-semibold text-base leading-5 uppercase text-primary-6'>
+                  Sản phẩm ĐƯỢC TÌM KIẾM NHIỀU NHẤT
+                </h3>
+                <div className='flex flex-col gap-4'>
+                  {products.map((product, index) => (
+                    <div key={index} className='flex gap-3 py-2 items-center border-b border-[#D5D5D5]'>
+                      <Image alt='' height={100} src={product.image} width={100} className='rounded-lg' />
+                      <div className='flex flex-col gap-1'>
+                        <p className='heading-5 text-black'>{product.name}</p>
+                        <ProductPrice price={product.price} salePrice={product.salePrice} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </HoverCardContent>
+          </HoverCard>
         </div>
       </div>
       <div
         ref={menuRef}
         className={cn(
           '-z-10 py-8 rounded-b-lg bg-secondary-2 shadow-header absolute w-full left-0 transition-all duration-300',
-          isMenuOpen ? 'top-[12.9rem]' : '-top-0 opacity-0'
+          isMenuOpen ? 'top-[12.9rem]' : '-top-[20rem] opacity-0'
         )}>
         <div className='flex px-[6.5rem] gap-8 max-w-screen-2xl mx-auto'>
           {menuItem?.items?.map((item) => (

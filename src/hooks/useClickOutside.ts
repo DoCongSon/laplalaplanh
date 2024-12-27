@@ -5,18 +5,28 @@ import { useEffect } from 'react'
  *
  * @param ref - A React ref object pointing to the element to detect outside clicks for.
  * @param handler - A function to be called when a click outside the specified element is detected.
+ * @param disable - An array of React ref objects pointing to elements that should not trigger the handler when clicked.
  *
  * @example
  * const ref = useRef(null);
- * useClickOutside(ref, () => {
- *   console.log('Clicked outside');
- * });
+ * const handleClickOutside = (event) => {
+ *   console.log('Clicked outside:', event);
+ * };
+ * useClickOutside(ref, handleClickOutside, [disableRef1, disableRef2]);
  */
-const useClickOutside = (ref: React.RefObject<HTMLElement | null>, handler: (event: MouseEvent) => void) => {
+const useClickOutside = (
+  ref: React.RefObject<HTMLElement | null>,
+  handler: (event: MouseEvent) => void,
+  disable?: React.RefObject<HTMLElement | null>[]
+) => {
   useEffect(() => {
     const listener = (event: MouseEvent) => {
       // Do nothing if clicking ref's element or descendent elements
-      if (!ref.current || ref.current.contains(event.target as Node)) {
+      if (
+        !ref.current ||
+        ref.current.contains(event.target as Node) ||
+        disable?.some((item) => item.current?.contains(event.target as Node))
+      ) {
         return
       }
       handler(event)
@@ -27,7 +37,7 @@ const useClickOutside = (ref: React.RefObject<HTMLElement | null>, handler: (eve
     return () => {
       document.removeEventListener('mousedown', listener)
     }
-  }, [ref, handler])
+  }, [ref, handler, disable])
 }
 
 export default useClickOutside
