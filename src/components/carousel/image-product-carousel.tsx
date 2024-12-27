@@ -55,7 +55,6 @@ const ImageProductCarousel = ({
           prevEl: `.${imagePre}`,
           nextEl: `.${imageNext}`,
         }}
-        onSwiper={(swiper) => console.log(swiper)}
         onSlideChange={onSlideChange}>
         {images.map((image, index) => (
           <SwiperSlide key={index}>

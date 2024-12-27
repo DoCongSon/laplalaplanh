@@ -5,6 +5,7 @@ import './globals.css'
 import Footer from '@/components/layout/footer'
 import { GlobalStoreProvider } from '@/providers/store-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { WebVitals } from '@/components/web-vitals'
 
 const averta = localFont({
   src: [
@@ -64,6 +65,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={`${averta.className} antialiased scroll-smooth scrollbar bg-secondary-1`}>
+        <WebVitals />
         <GlobalStoreProvider>
           <TooltipProvider delayDuration={100}>
             <Header />

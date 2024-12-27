@@ -31,9 +31,7 @@ const ProductCarousel = ({ products, id, className }: ProductCarouselProps) => {
         navigation={{
           prevEl: `.${productPre}`,
           nextEl: `.${productNext}`,
-        }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log('slide change')}>
+        }}>
         {products.map((product, index) => (
           <SwiperSlide key={index}>
             <ProductCard {...product} />
