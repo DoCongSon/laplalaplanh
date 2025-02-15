@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { cn, priceFormat } from '@/lib/utils'
 import Image from 'next/image'
 import SliderDualRange from './slider-dual-range'
-import { usePathname, useSearchParams } from 'next/navigation'
+// import { usePathname, useSearchParams } from 'next/navigation'
 
 type SelectNatureProps = {
   value: string
@@ -64,8 +64,8 @@ type FilterNatureProps = {
 }
 
 const FilterNature = ({ filters, className, prideFilter }: FilterNatureProps) => {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  // const pathname = usePathname()
+  // const searchParams = useSearchParams()
   const [pride, setPride] = React.useState([prideFilter.min, prideFilter.max])
   const [natures, setNatures] = React.useState<FilterItem[]>(filters)
   const [filterOpen, setFilterOpen] = React.useState<string | null>(null)
@@ -83,21 +83,21 @@ const FilterNature = ({ filters, className, prideFilter }: FilterNatureProps) =>
     return selectedNatures
   }, [natures, pride, prideFilter])
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
+  // const createQueryString = useCallback(
+  //   (name: string, value: string) => {
+  //     const params = new URLSearchParams(searchParams.toString())
+  //     params.set(name, value)
 
-      return params.toString()
-    },
-    [searchParams]
-  )
+  //     return params.toString()
+  //   },
+  //   [searchParams]
+  // )
 
-  useEffect(() => {
-    const newUrl = `${pathname}?${createQueryString('filter', selectedNatures.join(','))}`
+  // useEffect(() => {
+  //   const newUrl = `${pathname}?${createQueryString('filter', selectedNatures.join(','))}`
 
-    window.history.replaceState({ ...window.history.state, as: newUrl, url: newUrl }, '', newUrl)
-  }, [createQueryString, pathname, selectedNatures])
+  //   window.history.replaceState({ ...window.history.state, as: newUrl, url: newUrl }, '', newUrl)
+  // }, [createQueryString, pathname, selectedNatures])
 
   const handleClickFilter = (name: string) => {
     if (filterOpen === name) {
