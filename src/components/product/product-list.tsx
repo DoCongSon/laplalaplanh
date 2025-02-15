@@ -1,7 +1,10 @@
+'use client'
 import Link from 'next/link'
 import ProductCard, { ProductCardProps } from './product-card'
 import { cn } from '@/lib/utils'
 import ProductCarousel from '../carousel/product-carousel'
+import { useGlobalStore } from '@/providers/store-provider'
+import { Product } from '@/constants'
 
 type ProductListProps = {
   title: string
@@ -14,6 +17,26 @@ type ProductListProps = {
 }
 
 const ProductList = ({ id, products, readMoreLink, title, titleType, listType, className }: ProductListProps) => {
+  const { addToWishlist, removeFromWishlist, addToCart, cart, wishlist } = useGlobalStore((state) => state)
+
+  const newProducts = products.map((product) => ({
+    ...product,
+    onCartClick: () => handleCart(product),
+    onWishlistClick: () => handleWishlist(product),
+    cart: !!cart.find((item) => item.id === product.id),
+    wishlist: !!wishlist.find((item) => item.id === product.id),
+  }))
+
+  const handleCart = (product: Product) => {
+    addToCart({ ...product, quantity: 1, cartId: product.id })
+  }
+
+  const handleWishlist = (product: Product) => {
+    if (wishlist.find((item) => item.id === product.id)) {
+      removeFromWishlist(product.id)
+    } else addToWishlist(product)
+  }
+
   return (
     <div className={cn(className)}>
       <div className={'flex items-center justify-between mb-8'}>
@@ -36,10 +59,10 @@ const ProductList = ({ id, products, readMoreLink, title, titleType, listType, c
         )}
       </div>
       {listType === 'carousel' ? (
-        <ProductCarousel products={products} id={id as string} />
+        <ProductCarousel products={newProducts} id={id as string} />
       ) : (
         <div className='flex flex-wrap gap-10'>
-          {products.map((product, index) => (
+          {newProducts.map((product, index) => (
             <ProductCard key={index} {...product} />
           ))}
         </div>

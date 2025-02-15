@@ -2,19 +2,20 @@ import MiniCartItem from '@/components/cart/mini-cart-item'
 import Logo from '@/components/icons/logo'
 import { Button } from '@/components/ui/button'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { products } from '@/constants'
 import useClickOutside from '@/hooks/useClickOutside'
 import { priceFormat } from '@/lib/utils'
 import { useGlobalStore } from '@/providers/store-provider'
+import { CartItem } from '@/stores/store'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useMemo, useRef, useState } from 'react'
 
 const TopHeader = () => {
   const [isCartOpen, setIsCartOpen] = useState(false)
-  const { user, clearUser } = useGlobalStore((state) => state)
+  const { user, clearUser, cart, updateItemCart, removeFromCart, addPayment } = useGlobalStore((state) => state)
   const cartRef = useRef<HTMLDivElement>(null)
-
+  const router = useRouter()
   useClickOutside(cartRef, () => {
     if (isCartOpen) {
       setIsCartOpen(false)
@@ -23,6 +24,38 @@ const TopHeader = () => {
 
   const handleLogout = () => {
     clearUser()
+  }
+
+  const totalPrice = useMemo(() => {
+    return cart.reduce((total, item) => {
+      if (item.salePrice) {
+        return total + item.salePrice * item.quantity
+      } else {
+        return total + item.price * item.quantity
+      }
+    }, 0)
+  }, [cart])
+
+  const handleRemoveFromCart = (id: string) => {
+    removeFromCart(id)
+  }
+
+  const handleIncrease = (item: CartItem) => {
+    updateItemCart({ ...item, quantity: item.quantity + 1 })
+  }
+
+  const handleDecrease = (item: CartItem) => {
+    if (item.quantity > 1) {
+      updateItemCart({ ...item, quantity: item.quantity - 1 })
+    } else {
+      handleRemoveFromCart(item.cartId)
+    }
+  }
+
+  const handlePayment = () => {
+    addPayment(cart)
+    cart.forEach((item) => removeFromCart(item.cartId))
+    router.push('/payment')
   }
 
   return (
@@ -57,7 +90,7 @@ const TopHeader = () => {
               ref={cartRef}
               className='w-[33rem] top-0 -left-32 absolute p-11 bg-secondary-1 flex flex-col gap-1 rounded-none'>
               <div className='flex items-center justify-between'>
-                <h2 className='heading-2 text-black'>Giỏ hàng ({0})</h2>
+                <h2 className='heading-2 text-black'>Giỏ hàng ({cart.length})</h2>
                 <Image
                   alt=''
                   height={24}
@@ -67,28 +100,36 @@ const TopHeader = () => {
                   onClick={() => setIsCartOpen(false)}
                 />
               </div>
-              {products.length > 0 ? (
+              {cart.length > 0 ? (
                 <div className='flex flex-col gap-4'>
                   <div className='py-4 border-b border-t border-neutral-4'>
                     <div className='flex flex-col gap-6 max-h-[30rem] overflow-y-scroll scrollbar pr-2'>
-                      {products.map((product, index) => (
-                        <MiniCartItem key={index} {...product} quantity={1} note='Hàng order tên riêng đặt cọc 100%' />
+                      {cart.map((product, index) => (
+                        <MiniCartItem
+                          key={index}
+                          {...product}
+                          onRemove={() => handleRemoveFromCart(product.cartId)}
+                          onDecrease={() => handleDecrease(product)}
+                          onIncrease={() => handleIncrease(product)}
+                        />
                       ))}
                     </div>
                   </div>
                   <div className='flex justify-between items-center'>
                     <h6 className='heading-6 text-black'>Tổng cộng</h6>
-                    <p className='text-lg leading-5 text-[#C41B24] uppercase font-semibold'>{priceFormat(50000000)}</p>
+                    <p className='text-lg leading-5 text-[#C41B24] uppercase font-semibold'>
+                      {priceFormat(totalPrice)}
+                    </p>
                   </div>
                   <div className='flex justify-center gap-2 items-center'>
-                    <Link href='/cart'>
+                    <Link href='/cart' className='w-full'>
                       <Button className='uppercase w-full' variant='outline'>
                         Xem giỏ hàng
                       </Button>
                     </Link>
-                    <Link href='/payment'>
-                      <Button className='uppercase w-full'>Thanh toán</Button>
-                    </Link>
+                    <Button onClick={handlePayment} className='uppercase w-full'>
+                      Thanh toán
+                    </Button>
                   </div>
                 </div>
               ) : (

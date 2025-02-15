@@ -1,14 +1,13 @@
 import ProductPrice from '@/components/product/product-price'
+import { Product } from '@/constants'
 import Image from 'next/image'
 
-type MiniCartItemProps = {
-  image: string
-  name: string
-  price: number
+type MiniCartItemProps = Product & {
+  natures?: {
+    name: string
+    value: string
+  }[]
   quantity: number
-  note?: string
-  natures?: string[]
-  salePrice?: number
   onIncrease?: () => void
   onDecrease?: () => void
   onRemove?: () => void
@@ -19,19 +18,26 @@ const MiniCartItem = ({
   name,
   price,
   quantity,
-  note,
+  type,
+  tags,
   onDecrease,
   onIncrease,
   onRemove,
   salePrice,
   natures,
 }: MiniCartItemProps) => {
+  const status = {
+    available: 'Hàng có sẵn',
+    custom: 'Hàng order tên riêng đặt cọc 100%',
+    order: 'Hàng order đặt cọc 30%',
+  }
+
   return (
     <div className='flex gap-4 pb-2 border-b border-neutral-7 items-start'>
       <Image src={image} width={100} height={100} alt={name} className='rounded-[0.3125rem]' />
       <div className='flex-1'>
         <div className='flex flex-col gap-1 items-start'>
-          <div className='flex justify-between items-start gap-2'>
+          <div className='flex justify-between items-start gap-2 w-full'>
             <h3 className='text-base font-semibold text-primary-10 line-clamp-2'>{name}</h3>
             <Image
               alt=''
@@ -42,9 +48,12 @@ const MiniCartItem = ({
               className='cursor-pointer'
             />
           </div>
-          {note && <p className='text-[#C41B24] font-semibold leading-5 text-sm'>{note}</p>}
+          {tags && tags.includes('out-of-stock') && (
+            <p className='text-[#C41B24] font-semibold leading-5 text-sm'>Sản phẩm tạm hết hàng, vui lòng xoá</p>
+          )}
+          {type && <p className='text-[#C41B24] font-semibold leading-5 text-sm'>{status[type]}</p>}
           <div className='inline-flex gap-1 items-center p-1 rounded bg-neutral-3'>
-            <p className='paragraph-2 text-neutral-7'>Phân loại: {natures?.join(', ')}</p>
+            <p className='paragraph-2 text-neutral-7'>Phân loại: {natures?.map((nature) => nature.value).join(', ')}</p>
             <Image src='/icons/icon-down.svg' width={16} height={16} alt='star' />
           </div>
         </div>

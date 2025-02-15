@@ -17,7 +17,7 @@ const ProductPrice = ({ price, salePrice, className }: ProductPriceProps) => {
   return (
     <div className={cn('flex items-center gap-1', className)}>
       <p className='text-xs leading-normal line-through text-neutral-4'>{priceFormat(price)}</p>
-      <p className='text-lg leading-5 font-semibold uppercase text-error-6'>{priceFormat(price)}</p>
+      <p className='text-lg leading-5 font-semibold uppercase text-error-6'>{priceFormat(salePrice)}</p>
       <div className='flex items-center gap-0.5 p-0.5 rounded-sm bg-orange-gradient'>
         <Image src='/icons/icon-star-2.svg' alt='' width={11} height={11} />
         <p className='heading-6'>SALE</p>

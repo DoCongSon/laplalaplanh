@@ -1,3 +1,4 @@
+import NotFound from '@/app/not-found'
 import MainBreadcrumb from '@/components/layout/main-breadcrumb'
 import ProductCard from '@/components/product/product-card'
 import ProductImageView from '@/components/product/product-image-view'
@@ -40,33 +41,18 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       content: '/images/description.png',
     },
   ]
-
-  console.log('🚀 ~ params:', params)
+  const slug = await params
+  const product = products.find((product) => product.slug === slug.slug)
+  if (!product) {
+    return <NotFound />
+  }
 
   return (
     <div className='max-w-screen-2xl mx-auto px-[6.5rem] mt-10'>
       <MainBreadcrumb items={items} />
       <div className='flex gap-20 mt-4'>
-        <ProductImageView images={images} name='Product 1' />
-        <ProductNature
-          name='Product 1'
-          price={100000}
-          salePrice={80000}
-          tags={['new', 'order']}
-          type='order'
-          colors={[
-            { value: 'red', outOfStock: false },
-            { value: 'blue', outOfStock: false },
-            { value: 'yellow', outOfStock: false },
-            { value: 'green', outOfStock: true },
-          ]}
-          sizes={[
-            { value: '0-1M', outOfStock: false },
-            { value: '1-3M', outOfStock: false },
-            { value: '3-6M', outOfStock: false },
-            { value: '6-9M', outOfStock: true },
-          ]}
-        />
+        <ProductImageView images={images} name={product.name} />
+        <ProductNature {...product} />
       </div>
       <div className='mt-20 flex gap-10'>
         <Tabs

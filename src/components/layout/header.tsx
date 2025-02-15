@@ -62,7 +62,10 @@ const Header = () => {
 
   return (
     <header
-      className={cn('sticky -top-8 z-50 transition-all duration-300', scrollDirection === 'up' ? 'top-0' : '-top-8')}>
+      className={cn(
+        'sticky z-50 transition-all duration-500 ease-in-out',
+        scrollDirection === 'up' ? 'top-0' : '-top-[8.75rem]'
+      )}>
       <TopHeader />
       <div
         className={cn(

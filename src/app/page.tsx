@@ -1,4 +1,3 @@
-'use client'
 import BannerCarousel from '@/components/carousel/banner-carousel'
 import CustomerReviewCarousel from '@/components/carousel/customer-review-carousel'
 import BrandMarquee from '@/components/home/brand-marquee'
@@ -8,15 +7,11 @@ import ProductCategoryList from '@/components/product/product-category-list'
 import ProductList from '@/components/product/product-list'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
-import RegisterPage from './auth/register/page'
-import AuthLayout from './auth/layout'
-import { useGlobalStore } from '@/providers/store-provider'
 import { homeConstants } from '@/constants'
+import RegisterSection from '@/components/auth/register-section'
 const { slides, homeCategories, products, collectionItems, brandStory, reviewCards, brandMarqueeItems } = homeConstants
 
 export default function Home() {
-  const user = useGlobalStore((state) => state.user)
-
   return (
     <div className=''>
       <BannerCarousel slides={slides} id='1' />
@@ -60,11 +55,7 @@ export default function Home() {
         </div>
       </div>
       <BrandMarquee className='my-16' brands={brandMarqueeItems} />
-      {!user && (
-        <AuthLayout>
-          <RegisterPage />
-        </AuthLayout>
-      )}
+      <RegisterSection />
     </div>
   )
 }

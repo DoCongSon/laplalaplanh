@@ -1,42 +1,24 @@
 'use client'
 import React from 'react'
 import ProductPrice from './product-price'
-import { Separator } from '@radix-ui/react-separator'
-import { cn } from '@/lib/utils'
+import { Separator } from '@/components/ui/separator'
+import { cn, generateId } from '@/lib/utils'
 import { Button } from '../ui/button'
-import ProductTag, { ProductTagProps } from './product-tag'
+import ProductTag from './product-tag'
 import { Input } from '../ui/input'
 import Image from 'next/image'
 import Star from '../icons/star'
 import Bag from '../icons/bag'
+import { Product } from '@/constants'
+import { useGlobalStore } from '@/providers/store-provider'
 
-type ProductNatureProps = {
-  tags?: ProductTagProps['tag'][]
-  type?: 'order' | 'custom' | 'available'
-  name: string
-  price: number
-  salePrice?: number
+type ProductNatureProps = Product & {
   className?: string
-  sizes?: { value: string; outOfStock: boolean }[]
-  colors?: { value: string; outOfStock: boolean }[]
-  onAddToCart?: () => void
-  onBuyNow?: () => void
-  onFavorite?: () => void
 }
 
-const ProductNature = ({
-  name,
-  price,
-  className,
-  salePrice,
-  sizes,
-  colors,
-  tags,
-  type,
-  onAddToCart,
-  onBuyNow,
-  onFavorite,
-}: ProductNatureProps) => {
+const ProductNature = (props: ProductNatureProps) => {
+  const { className, name, price, salePrice, tags, sizes, colors, type, id } = props
+  const { addToCart, wishlist, addToWishlist, removeFromWishlist } = useGlobalStore((state) => state)
   const [quantity, setQuantity] = React.useState(1)
   const [selectedSize, setSelectedSize] = React.useState<string | null>(null)
   const [selectedColor, setSelectedColor] = React.useState<string | null>(null)
@@ -62,6 +44,29 @@ const ProductNature = ({
   const handleClear = () => {
     setSelectedColor(null)
     setSelectedSize(null)
+  }
+
+  const handleAddToCart = () => {
+    const natures = []
+    if (selectedSize) {
+      natures.push({ name: 'size', value: selectedSize })
+    }
+    if (selectedColor) {
+      natures.push({ name: 'color', value: selectedColor })
+    }
+    addToCart({ ...props, quantity, cartId: generateId(), natures })
+  }
+
+  const handleWishlist = () => {
+    if (wishlist.find((wish) => wish.id === id)) {
+      removeFromWishlist(id)
+    } else {
+      addToWishlist(props)
+    }
+  }
+
+  const handleBuyNow = () => {
+    console.log('Buy now')
   }
 
   const typeStatus = {
@@ -161,16 +166,16 @@ const ProductNature = ({
             onClick={() => handleChangeQuantity(quantity + 1)}
           />
         </div>
-        <Button onClick={onAddToCart} variant='outline'>
+        <Button onClick={handleAddToCart} variant='outline'>
           <Bag stroke='#29433e' />
           Thêm vào giỏ hàng
         </Button>
-        <Button onClick={onFavorite} variant='outline'>
-          <Star stroke='#29433e' />
+        <Button onClick={handleWishlist} variant='outline'>
+          <Star stroke='#29433e' fill={!!wishlist.find((wish) => wish.id === id) ? '#29433e' : 'none'} />
           Yêu thích
         </Button>
       </div>
-      <Button onClick={onBuyNow} className='w-full mt-4'>
+      <Button onClick={handleBuyNow} className='w-full mt-4'>
         MUA NGAY
       </Button>
     </div>

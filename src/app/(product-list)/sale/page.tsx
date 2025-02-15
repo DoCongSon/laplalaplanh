@@ -35,14 +35,7 @@ const SalePage = () => {
           Sale
         </h2>
       </div>
-      <FilterNature
-        className='mt-10'
-        onFilterChange={(natures) => {
-          console.log(natures)
-        }}
-        filters={filters}
-        prideFilter={{ min: 0, max: 30000000 }}
-      />
+      <FilterNature className='mt-10' filters={filters} prideFilter={{ min: 0, max: 30000000 }} />
       <div className='flex items-center justify-between mt-3 p-2'>
         <h6 className='heading-6 text-primary-6'>tổng sản phẩm: {12}</h6>
         <HoverCard>
@@ -75,7 +68,7 @@ const SalePage = () => {
         <div>
           <div className='flex flex-wrap gap-10'>
             {products.map((product, index) => (
-              <ProductCard key={index} {...product} />
+              <ProductCard key={index} {...product} onCartClick={() => {}} onWishlistClick={() => {}} />
             ))}
           </div>
           <MainPagination currentPage={1} totalPages={5} className='mt-3' />

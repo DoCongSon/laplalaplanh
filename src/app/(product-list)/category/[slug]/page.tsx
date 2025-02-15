@@ -61,9 +61,6 @@ const CategoryPage = ({ params }: { params: Promise<{ slug: string }> }) => {
       </div>
       <FilterNature
         className='mt-10'
-        onFilterChange={(natures) => {
-          console.log(natures)
-        }}
         filters={filters}
         prideFilter={{ min: 0, max: 30000000 }}
       />

@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { cn, priceFormat } from '@/lib/utils'
 import Image from 'next/image'
 import SliderDualRange from './slider-dual-range'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 type SelectNatureProps = {
   value: string
@@ -59,11 +60,12 @@ type FilterNatureProps = {
     min: number
     max: number
   }
-  onFilterChange: (filters: FilterItem[]) => void
   className?: string
 }
 
-const FilterNature = ({ filters, onFilterChange, className, prideFilter }: FilterNatureProps) => {
+const FilterNature = ({ filters, className, prideFilter }: FilterNatureProps) => {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
   const [pride, setPride] = React.useState([prideFilter.min, prideFilter.max])
   const [natures, setNatures] = React.useState<FilterItem[]>(filters)
   const [filterOpen, setFilterOpen] = React.useState<string | null>(null)
@@ -81,6 +83,22 @@ const FilterNature = ({ filters, onFilterChange, className, prideFilter }: Filte
     return selectedNatures
   }, [natures, pride, prideFilter])
 
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+
+      return params.toString()
+    },
+    [searchParams]
+  )
+
+  useEffect(() => {
+    const newUrl = `${pathname}?${createQueryString('filter', selectedNatures.join(','))}`
+
+    window.history.replaceState({ ...window.history.state, as: newUrl, url: newUrl }, '', newUrl)
+  }, [createQueryString, pathname, selectedNatures])
+
   const handleClickFilter = (name: string) => {
     if (filterOpen === name) {
       setFilterOpen(null)
@@ -93,7 +111,6 @@ const FilterNature = ({ filters, onFilterChange, className, prideFilter }: Filte
     // delete price item
     if (name.includes('₫')) {
       setPride([prideFilter.min, prideFilter.max])
-      onFilterChange(natures)
     }
 
     const newFilters = natures.map((filter) => {
@@ -114,24 +131,11 @@ const FilterNature = ({ filters, onFilterChange, className, prideFilter }: Filte
       return filter
     })
     setNatures(newFilters)
-    onFilterChange(newFilters)
   }
 
   const handleClearAllNature = () => {
-    const newFilters = natures.map((filter) => {
-      return {
-        ...filter,
-        values: filter.values.map((nature) => {
-          return {
-            ...nature,
-            selected: false,
-          }
-        }),
-      }
-    })
     setPride([prideFilter.min, prideFilter.max])
-    setNatures(newFilters)
-    onFilterChange(newFilters)
+    setNatures(filters)
   }
 
   return (
