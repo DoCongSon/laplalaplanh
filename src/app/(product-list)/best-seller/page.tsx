@@ -29,14 +29,7 @@ const BestSellerPage = () => {
       <div className='flex items-center justify-center'>
         <h2 className={cn('heading-2 leading-normal uppercase inline-block text-primary-6')}>Best Seller</h2>
       </div>
-      <FilterNature
-        className='mt-10'
-        onFilterChange={(natures) => {
-          console.log(natures)
-        }}
-        filters={filters}
-        prideFilter={{ min: 0, max: 30000000 }}
-      />
+      <FilterNature className='mt-10' filters={filters} prideFilter={{ min: 0, max: 30000000 }} />
       <div className='flex items-center justify-between mt-3 p-2'>
         <h6 className='heading-6 text-primary-6'>tổng sản phẩm: {12}</h6>
         <HoverCard>

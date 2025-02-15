@@ -6,6 +6,7 @@ import Footer from '@/components/layout/footer'
 import { GlobalStoreProvider } from '@/providers/store-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { WebVitals } from '@/components/web-vitals'
+import { Toaster } from '@/components/ui/sonner'
 
 const averta = localFont({
   src: [
@@ -73,6 +74,7 @@ export default function RootLayout({
             <Footer />
           </TooltipProvider>
         </GlobalStoreProvider>
+        <Toaster />
       </body>
     </html>
   )

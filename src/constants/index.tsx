@@ -1,10 +1,22 @@
 import { ReviewCardProps } from '@/components/carousel/review-card'
 import { BrandStoryProps } from '@/components/home/brand-story'
 import { CollectionItem } from '@/components/home/collection'
-import { ProductCardProps } from '@/components/product/product-card'
 import { ProductReviewItemProps } from '@/components/product/product-review-item'
 import { FilterItem } from '@/components/ui/filter-nature'
 import { JSX } from 'react'
+
+export type Product = {
+  id: string
+  slug: string
+  image: string
+  name: string
+  price: number
+  type?: 'order' | 'custom' | 'available'
+  salePrice?: number
+  tags?: ('new' | 'order' | 'out-of-stock' | 'best-seller')[]
+  sizes?: { value: string; outOfStock: boolean }[]
+  colors?: { value: string; outOfStock: boolean }[]
+}
 
 export type SortProduct = 'default' | 'price-asc' | 'price-desc' | 'newest' | 'best-sell'
 
@@ -17,6 +29,12 @@ export type MenuItem = {
   icon?: string
   href?: string
   items?: MenuItem[]
+}
+
+export type DeliveryMethodType = {
+  title: string
+  description?: React.ReactNode
+  note: React.ReactNode
 }
 
 export const menuItems: MenuItem[] = [
@@ -144,76 +162,149 @@ export const slides = [
   },
 ]
 
-export const products: ProductCardProps[] = [
+export const products: Product[] = [
   {
-    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be',
+    id: '1',
+    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be-1',
     image: '/images/product-1.jpg',
     name: 'Áo ngủ chống mồ hôi trộm cho bé lorem ipsum dolor sit amet consectetur adipisicing elit',
     price: 1400000,
     salePrice: 1200000,
     tags: ['new', 'order'],
-    cart: true,
+    colors: [
+      { value: 'red', outOfStock: false },
+      { value: 'green', outOfStock: false },
+      { value: 'yellow', outOfStock: false },
+      { value: 'black', outOfStock: false },
+      { value: 'blue', outOfStock: false },
+      { value: 'pink', outOfStock: false },
+      { value: 'white', outOfStock: true },
+      { value: 'purple', outOfStock: true },
+    ],
+    sizes: [
+      { value: 'S', outOfStock: false },
+      { value: 'M', outOfStock: true },
+      { value: 'L', outOfStock: false },
+      { value: 'XL', outOfStock: false },
+      { value: 'XXL', outOfStock: false },
+    ],
+    type: 'order',
   },
   {
-    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be',
+    id: '2',
+    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be-2',
     image: '/images/product-1.jpg',
     name: 'Áo ngủ chống mồ hôi trộm cho bé ',
     price: 1400000,
-    tags: ['out-of-stock'],
-    cart: true,
+    type: 'available',
+    colors: [
+      { value: 'red', outOfStock: false },
+      { value: 'blue', outOfStock: true },
+    ],
+    sizes: [
+      { value: 'S', outOfStock: false },
+      { value: 'M', outOfStock: true },
+    ],
   },
   {
-    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be',
+    id: '3',
+    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be-3',
     image: '/images/product-1.jpg',
     name: 'Áo ngủ chống mồ hôi trộm cho bé ',
     price: 1400000,
-    salePrice: 1200000,
-    cart: true,
+    colors: [
+      { value: 'red', outOfStock: false },
+      { value: 'blue', outOfStock: true },
+    ],
+    sizes: [
+      { value: 'S', outOfStock: false },
+      { value: 'M', outOfStock: true },
+    ],
   },
   {
-    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be',
+    id: '4',
+    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be-4',
     image: '/images/product-1.jpg',
-    name: 'Áo ngủ chống mồ hôi trộm cho bé ',
-    price: 1400000,
-    salePrice: 1200000,
+    name: 'Áo ngủ chống mồ hôi trộm cho bé',
+    price: 1650000,
+    salePrice: 1350000,
     tags: ['order'],
-    cart: true,
+    colors: [
+      { value: 'red', outOfStock: false },
+      { value: 'blue', outOfStock: true },
+    ],
+    sizes: [
+      { value: 'S', outOfStock: false },
+      { value: 'M', outOfStock: true },
+    ],
   },
   {
-    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be',
+    id: '5',
+    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be-5',
     image: '/images/product-1.jpg',
     name: 'Áo ngủ chống mồ hôi trộm cho bé ',
     price: 1400000,
     salePrice: 1200000,
     tags: ['best-seller'],
-    cart: true,
+    colors: [
+      { value: 'red', outOfStock: false },
+      { value: 'blue', outOfStock: true },
+    ],
+    sizes: [
+      { value: 'S', outOfStock: false },
+      { value: 'M', outOfStock: true },
+    ],
   },
   {
-    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be',
+    id: '6',
+    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be-6',
     image: '/images/product-1.jpg',
     name: 'Áo ngủ chống mồ hôi trộm cho bé ',
     price: 1400000,
     salePrice: 1200000,
     tags: ['new', 'order'],
-    cart: true,
+    colors: [
+      { value: 'red', outOfStock: false },
+      { value: 'blue', outOfStock: true },
+    ],
+    sizes: [
+      { value: 'S', outOfStock: false },
+      { value: 'M', outOfStock: true },
+    ],
   },
   {
-    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be',
+    id: '7',
+    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be-7',
     image: '/images/product-1.jpg',
     name: 'Áo ngủ chống mồ hôi trộm cho bé ',
     price: 1400000,
     salePrice: 1200000,
     tags: ['new', 'order'],
-    cart: true,
+    colors: [
+      { value: 'red', outOfStock: false },
+      { value: 'blue', outOfStock: true },
+    ],
+    sizes: [
+      { value: 'S', outOfStock: false },
+      { value: 'M', outOfStock: true },
+    ],
   },
   {
-    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be',
+    id: '8',
+    slug: 'ao-ngu-chong-mo-hoi-trom-cho-be-8',
     image: '/images/product-1.jpg',
     name: 'Áo ngủ chống mồ hôi trộm cho bé ',
     price: 1400000,
     salePrice: 1200000,
-    tags: ['new', 'order'],
-    cart: true,
+    tags: ['out-of-stock'],
+    colors: [
+      { value: 'red', outOfStock: false },
+      { value: 'blue', outOfStock: true },
+    ],
+    sizes: [
+      { value: 'S', outOfStock: false },
+      { value: 'M', outOfStock: true },
+    ],
   },
 ]
 
@@ -485,9 +576,39 @@ export const paymentProgressItems: paymentProgressItem[] = [
   { name: 'Hoàn tất', description: 'Trạng thái dơn đặt hàng', progress: 'complete' },
 ]
 
+export const deliveryMethods: DeliveryMethodType[] = [
+  {
+    title: 'Giao hàng tiết kiệm (2 - 3 ngày làm việc)',
+    note: 'Phí vận chuyển tự động tính theo công ty vận chuyển',
+  },
+  {
+    title: 'Nhận hàng trực tiếp tại showroom Lấp La Lấp Lánh',
+    note: '0đ',
+    description: (
+      <p>
+        <b>Địa chỉ:</b> 18 Đường C18, Phường 12, Quận Tân Bình, TP.HCM <br /> <b>Lưu ý:</b> Quý khách cần thanh toán
+        trước 100% giá trị đơn hàng. Không phát sinh phí vận chuyển.
+      </p>
+    ),
+  },
+  {
+    title: 'Giao hàng hỏa tốc nội thành TP.HCM (2-4 giờ làm việc)',
+    note: (
+      <span>
+        Phí vận chuyển tính <br /> theo Ahamove hoặc Grab
+      </span>
+    ),
+    description: (
+      <p>
+        <b>Lưu ý:</b> Lấp Lánh sẽ gọi điện cho quý khách để báo chính xác phí vận chuyển
+      </p>
+    ),
+  },
+]
+
 export const homeConstants = {
   slides,
-  products: products.map((product) => ({ ...product, cart: false, onCartClick: () => {}, onWishlistClick: () => {} })),
+  products,
   reviewCards,
   homeCategories,
   collectionItems,

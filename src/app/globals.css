@@ -99,7 +99,7 @@
   }
 
   .paragraph-1 {
-    @apply text-sm font-normal leading-5 text-primary-1;
+    @apply text-sm font-normal text-primary-1;
   }
 
   .paragraph-2 {

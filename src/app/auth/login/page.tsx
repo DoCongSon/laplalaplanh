@@ -16,7 +16,7 @@ const LoginPage = () => {
         email: values.email,
         name: 'Demo User',
         phoneNumber: '0123456789',
-        childInfo: [{ name: 'An', dob: '01/10/2021' }],
+        childInfo: [{ name: 'An', dob: '2021-02-04' }],
       })
     }
     router.push('/welcome')

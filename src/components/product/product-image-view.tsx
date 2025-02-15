@@ -4,7 +4,7 @@ import ImageProductCarousel from '../carousel/image-product-carousel'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { SwiperRef } from 'swiper/react'
-import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog'
 
 type ProductImageViewProps = {
   name: string
@@ -25,7 +25,7 @@ const ProductImageView = ({ images, name }: ProductImageViewProps) => {
   return (
     <Dialog>
       <div className='flex gap-2'>
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2 w-40'>
           {images[0] && (
             <Image
               src={images[0]}
@@ -72,6 +72,7 @@ const ProductImageView = ({ images, name }: ProductImageViewProps) => {
         />
       </div>
       <DialogContent className='w-[65.3125rem] pb-10'>
+        <DialogTitle hidden />
         <div className='flex gap-2 mt-6'>
           <ImageProductCarousel
             ref={slideFullRef}

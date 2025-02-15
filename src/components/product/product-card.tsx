@@ -1,18 +1,13 @@
 'use client'
 import Image from 'next/image'
-import ProductTag, { ProductTagProps } from './product-tag'
+import ProductTag from './product-tag'
 import ProductPrice from './product-price'
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 import Link from 'next/link'
+import { Product } from '@/constants'
 
-export type ProductCardProps = {
-  slug: string
-  image: string
-  name: string
-  price: number
-  salePrice?: number
-  tags?: ProductTagProps['tag'][]
+export type ProductCardProps = Product & {
   wishlist?: boolean
   cart?: boolean
   onWishlistClick?: () => void

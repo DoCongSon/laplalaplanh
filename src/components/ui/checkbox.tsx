@@ -20,7 +20,7 @@ const Checkbox = ({ onClick, selected, className, iconClassName, stroke }: Check
       )}
       onClick={onClick}>
       <Star
-        className={cn('w-3 h-3', iconClassName)}
+        className={cn('w-[13px] h-[13px]', iconClassName)}
         strokeWidth='1'
         stroke={stroke || '#29433E'}
         fill={selected ? 'white' : 'none'}
